@@ -19,7 +19,7 @@ export default function Auth({ setUser }) {
       <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <TextField label="Email" variant="outlined" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField label="Password" variant="outlined" fullWidth type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button type="submit" variant="contained" color="primary">{isRegister ? "Register" : "Login"}</Button>
+        <Button  type="submit" variant="contained" color="primary">{isRegister ? "Register" : "Login"}</Button>
       </form>
       <Button onClick={() => setIsRegister(!isRegister)} sx={{ marginTop: 2 }}>
         {isRegister ? "Already have an account? Login" : "Create an account"}

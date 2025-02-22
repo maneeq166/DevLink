@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import LinkForm from "./components/LinkForm";
 import LinkList from "./components/LinkList";
 import { getUser } from "./api/auth";
+import Navbar from "./components/Navbar";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -22,7 +23,12 @@ export default function App() {
   return (
     <Router>
       <CssBaseline />
-      <Container maxWidth="md">
+      <div className="min-h-screen w-full overflow-hidden">
+
+      <Container maxWidth="xl" sx={{   minHeight: "100%",minWidth:"100%",
+   }}>
+      <Navbar user={user} setUser={setUser} />
+
         <Routes>
           <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
           <Route path="/login" element={<Auth setUser={setUser} />} />
@@ -31,6 +37,7 @@ export default function App() {
           <Route path="/links" element={user ? <LinkList /> : <Navigate to="/login" />} />
         </Routes>
       </Container>
+      </div>
     </Router>
   );
 }
