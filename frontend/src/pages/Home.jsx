@@ -44,7 +44,7 @@ export default function Home() {
           <Box sx={{ marginTop: 2 }}>
             <Button 
               component={Link} 
-              to="/login" 
+              to="/register" 
               variant="contained" 
               sx={{
                 backgroundColor: "#0D47A1", 
