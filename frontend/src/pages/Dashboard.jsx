@@ -5,19 +5,29 @@ import LinkList from "../components/Linklist";
 import AuthNavbar from "../components/AuthNavbar";
 
 export default function Dashboard() {
-  const fullText = "Welcome, username"; // Full text to be typed
+  const [username, setUsername] = useState(""); // State for username
   const [typedText, setTypedText] = useState("");
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    // Fetch username from localStorage or default to "Guest"
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser && storedUser.username) {
+      setUsername(storedUser.username);
+    }
+  }, []);
+
+  const fullText = `Welcome, ${username || "Guest"}`; // Dynamic welcome text
 
   useEffect(() => {
     if (index < fullText.length) {
       const timeout = setTimeout(() => {
         setTypedText((prev) => prev + fullText[index]);
         setIndex(index + 1);
-      }, 100); // Adjust speed by changing this delay (100ms)
+      }, 100); // Typing speed
       return () => clearTimeout(timeout);
     }
-  }, [index]);
+  }, [index, fullText]);
 
   return (
     <Box

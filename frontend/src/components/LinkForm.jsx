@@ -5,19 +5,37 @@ import { addLink } from "../api/links";
 export default function LinkForm() {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addLink({ title, url });
-    setTitle("");
-    setUrl("");
+
+    // Validation
+    if (!title.trim() || !url.trim()) {
+      setError("Title and URL are required.");
+      return;
+    }
+
+    try {
+      await addLink({ title, url });
+      setTitle("");
+      setUrl("");
+      setError(""); // Clear error on success
+    } catch (err) {
+      setError("Failed to add link. Please try again.");
+    }
   };
 
   return (
     <Paper elevation={3} sx={{ padding: 3, marginTop: 2 }}>
       <Typography
         variant="h6"
-        sx={{ textAlign: "center", fontFamily: "monospace", fontWeight: 600 ,fontSize:"25px" }}
+        sx={{
+          textAlign: "center",
+          fontFamily: "monospace",
+          fontWeight: 600,
+          fontSize: "25px",
+        }}
       >
         Add New Link
       </Typography>
@@ -37,10 +55,10 @@ export default function LinkForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           sx={{
-            fontFamily: "monospace", // Makes text monospace
+            fontFamily: "monospace",
             "& .MuiOutlinedInput-root": {
-              borderRadius: 0, // Removes border-radius for sharper edges
-              fontFamily: "monospace", // Ensures input text is monospace
+              borderRadius: 0,
+              fontFamily: "monospace",
             },
           }}
         />
@@ -60,6 +78,12 @@ export default function LinkForm() {
           }}
         />
 
+        {error && (
+          <Typography color="error" sx={{ fontFamily: "monospace" }}>
+            {error}
+          </Typography>
+        )}
+
         <Button
           type="submit"
           variant="contained"
@@ -76,7 +100,7 @@ export default function LinkForm() {
             "&:hover": {
               backgroundColor: "#08306b",
               boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.3)",
-            }, // Adds a glowing hover effect
+            },
           }}
         >
           Add Link

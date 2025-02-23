@@ -88,10 +88,10 @@ const Login = async (req, res) => {
 
 const addLink = async (req, res) => {
   try {
-    const { url } = req.body;
-    const newLink = new Link({ title , url });
+    const { title, url } = req.body;
+    const newLink = new Link({ title, url });
     await newLink.save();
-    res.json(newLink);
+    res.status(201).json(newLink);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -99,38 +99,26 @@ const addLink = async (req, res) => {
 
 const getLinks = async (req, res) => {
   try {
-    const links = await Link.find({ user: req.user.id });
+    const links = await Link.find();
     res.json(links);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 const deleteLink = async (req, res) => {
   try {
-    const { id } = req.params; // Get link ID from request params
-
-    // Find the link by ID and ensure it belongs to the logged-in user
-    const link = await Link.findOne({ _id: id, user: req.user.id });
-
-    if (!link) {
-      return res.status(404).json({ error: "Link not found or unauthorized" });
-    }
-
-    // Delete the link
-    await Link.findByIdAndDelete(id);
-
+    await Link.findByIdAndDelete(req.params.id);
     res.json({ message: "Link deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-
-
 app.post("/register", Register);
 app.post("/login", Login);
 app.post("/addlink", authMiddleware , addLink);
-app.post("/", authMiddleware , getLinks);
+app.get("/links", authMiddleware , getLinks);
 app.delete("/deletelink/:id", authMiddleware , deleteLink);
 
 function started() {
@@ -138,7 +126,6 @@ function started() {
 }
 
 app.listen(port, started);
-console.log(process.env.MONGODB_URL);
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,

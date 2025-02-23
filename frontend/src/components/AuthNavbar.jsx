@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
 export default function AuthNavbar({ setUser }) {
+  const navigate = useNavigate();
   const handleLogout = () => {
-    setUser(null); // Clear user state
+    setUser(null);
+    localStorage.removeItem("token");
+              navigate("/");
+    
+    // Clear user state
   };
 
   return (
