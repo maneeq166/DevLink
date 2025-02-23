@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Navbar from "./Navbar";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
+    <div>
+      <Navbar />
     <Paper
       elevation={5}
       sx={{
@@ -123,5 +126,6 @@ export default function Register() {
         Already have an account? Login
       </Button>
     </Paper>
+    </div>
   );
 }

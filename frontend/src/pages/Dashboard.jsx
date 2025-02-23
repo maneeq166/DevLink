@@ -1,13 +1,17 @@
 import { Typography, Container } from "@mui/material";
 import LinkForm from "../components/LinkForm";
-import LinkList from "../components/LinkList";
+import LinkList from "../components/Linklist";
+import AuthNavbar from "../components/AuthNavbar";
 
-export default function Dashboard({ user }) {
+export default function Dashboard() {
   return (
+    <div>
+    <AuthNavbar />
     <Container sx={{ marginTop: 5 }}>
-      <Typography variant="h4">Welcome, {user.email}!</Typography>
+      <Typography variant="h4">Welcome,!</Typography>
       <LinkForm />
       <LinkList />
     </Container>
+    </div>
   );
 }

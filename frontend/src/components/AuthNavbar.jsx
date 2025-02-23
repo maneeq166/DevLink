@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 
-export default function Navbar() {
- 
+export default function AuthNavbar({ setUser }) {
+  const handleLogout = () => {
+    setUser(null); // Clear user state
+  };
 
   return (
     <AppBar 
@@ -10,20 +12,19 @@ export default function Navbar() {
       sx={{
         marginTop: 2,
         width: "100%",
-        backgroundColor: "rgba(13, 71, 161, 0.8)", // Slight transparency
+        backgroundColor: "rgba(13, 71, 161, 0.8)",
         boxShadow: 4,
         paddingY: 0,
         borderRadius: 3,
         transition: "background-color 0.3s ease, border 0.3s ease",
-        border: "1px solid rgba(0, 0, 0, 0.4)", // Thin darker border
+        border: "1px solid rgba(0, 0, 0, 0.4)",
         "&:hover": {
-          backgroundColor: "rgba(13, 71, 161, 1)", // Full color on hover
-          border: "1px solid rgba(0, 0, 0, 0.6)" // Darker border on hover
+          backgroundColor: "rgba(13, 71, 161, 1)",
+          border: "1px solid rgba(0, 0, 0, 0.6)"
         }
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* Logo / Brand Name */}
         <Typography 
           variant="h5" 
           component={Link} 
@@ -38,30 +39,32 @@ export default function Navbar() {
           DevLink
         </Typography>
 
-        {/* Navigation Links */}
         <Box>
-          
-              <Button component={Link} to="/login" sx={navButtonStyle}>
-                Login
-              </Button>
-              <Button 
-                component={Link} 
-                to="/register" 
-                sx={{ 
-                  ...navButtonStyle, 
-                  backgroundColor: "rgb(0, 0, 100,0.6)", // Green color for register
-                  "&:hover": { backgroundColor: "rgb(0, 0, 90)" } 
-                }}
-              >
-                Register
-              </Button>          
+          <Button component={Link} to="/dashboard" sx={navButtonStyle}>
+            Dashboard
+          </Button>
+          <Button component={Link} to="/add-link" sx={navButtonStyle}>
+            Add Link
+          </Button>
+          <Button component={Link} to="/links" sx={navButtonStyle}>
+            My Links
+          </Button>
+          <Button 
+            onClick={handleLogout} 
+            sx={{ 
+              ...navButtonStyle, 
+              backgroundColor: "#D32F2F", 
+              "&:hover": { backgroundColor: "#B71C1C" }
+            }}
+          >
+            Logout
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>
   );
 }
 
-// 🔹 Reusable Button Style Object
 const navButtonStyle = {
   color: "white",
   fontSize: "15px",

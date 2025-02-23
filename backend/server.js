@@ -38,7 +38,9 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
 import { User } from "./models/userModel.js";
+import { Link } from './models/linkModel.js';
 import dotenv from 'dotenv';
+import authMiddleware from "./middleware/authMiddleware.js";
 dotenv.config();
 
 const app = express();
@@ -84,9 +86,52 @@ const Login = async (req, res) => {
   }
 };
 
+const createLink = async (req, res) => {
+  try {
+    const { url } = req.body;
+    const newLink = new Link({ title , url });
+    await newLink.save();
+    res.json(newLink);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const getLinks = async (req, res) => {
+  try {
+    const links = await Link.find({ user: req.user.id });
+    res.json(links);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+const deleteLink = async (req, res) => {
+  try {
+    const { id } = req.params; // Get link ID from request params
+
+    // Find the link by ID and ensure it belongs to the logged-in user
+    const link = await Link.findOne({ _id: id, user: req.user.id });
+
+    if (!link) {
+      return res.status(404).json({ error: "Link not found or unauthorized" });
+    }
+
+    // Delete the link
+    await Link.findByIdAndDelete(id);
+
+    res.json({ message: "Link deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 app.post("/register", Register);
 app.post("/login", Login);
+app.post("/createlink", authMiddleware ,createLink);
+app.post("/", authMiddleware , getLinks);
+app.delete("/deletelink/:id", authMiddleware , deleteLink);
 
 function started() {
   console.log(`Example app listening on port ${port}`);

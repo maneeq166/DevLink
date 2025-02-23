@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Typography, Paper } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Navbar from "./Navbar";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   return (
+    <div>
+      <Navbar />
     <Paper
       elevation={5}
       sx={{
@@ -70,8 +73,8 @@ export default function Login() {
               const res = await axios.post(
                 `http://localhost:3000/login/`,
                 {
-                  username,
-                  password,
+                  username: username,
+                  password: password,
                 },
                 {
                   headers: {
@@ -82,7 +85,7 @@ export default function Login() {
               const data = res.data;
               console.log(data);
               alert("Login Successfully");
-              navigate('/dashboard');
+              navigate("/dashboard");
             } catch (err) {
               console.error(err);
               alert(
@@ -119,5 +122,6 @@ export default function Login() {
         Didn't have an account? Register
       </Button>
     </Paper>
+    </div>
   );
 }
