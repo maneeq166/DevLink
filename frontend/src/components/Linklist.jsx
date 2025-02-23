@@ -15,7 +15,7 @@ export default function LinkList() {
 
   return (
     <Paper elevation={3} sx={{ padding: 3, marginTop: 2 }}>
-      <Typography variant="h6">Your Links</Typography>
+      <Typography variant="h6" sx={{fontWeight:500,fontFamily:"monospace",marginTop:1}}>Your Links</Typography>
       <List>
         {links.map((link) => (
           <ListItem key={link.id} secondaryAction={
