@@ -86,7 +86,7 @@ const Login = async (req, res) => {
   }
 };
 
-const createLink = async (req, res) => {
+const addLink = async (req, res) => {
   try {
     const { url } = req.body;
     const newLink = new Link({ title , url });
@@ -129,7 +129,7 @@ const deleteLink = async (req, res) => {
 
 app.post("/register", Register);
 app.post("/login", Login);
-app.post("/createlink", authMiddleware ,createLink);
+app.post("/addlink", authMiddleware , addLink);
 app.post("/", authMiddleware , getLinks);
 app.delete("/deletelink/:id", authMiddleware , deleteLink);
 

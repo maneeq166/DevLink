@@ -71,7 +71,7 @@ export default function Login() {
             }
             try {
               const res = await axios.post(
-                `http://localhost:3000/login/`,
+                `http://localhost:3000/login`,
                 {
                   username: username,
                   password: password,
@@ -85,6 +85,7 @@ export default function Login() {
               const data = res.data;
               console.log(data);
               alert("Login Successfully");
+              localStorage.setItem("user", JSON.stringify(res.data));
               navigate("/dashboard");
             } catch (err) {
               console.error(err);

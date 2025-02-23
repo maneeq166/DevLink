@@ -13,7 +13,7 @@ export const getLinks = async () => {
 
 export const addLink = async (link) => {
   try {
-    await axios.post("http://localhost:3000/createlink", link, { withCredentials: true });
+    await axios.post("http://localhost:3000/addlink", link, { withCredentials: true });
   } catch (err) {
     console.error("Error adding link:", err);
   }
