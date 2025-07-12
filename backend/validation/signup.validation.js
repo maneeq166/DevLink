@@ -1,6 +1,5 @@
 import z from "zod";
 
-
 export const signUpSchema = z
   .object({
     username: z.string().min(3, {
@@ -13,9 +12,13 @@ export const signUpSchema = z
       message: "Invalid email format",
     }),
   })
-  .strict(); 
+  .strict();
 
-  export const signInSchema = z.object({
-  email: z.email({ message: "Invalid email format" }),
-  password: z.string().min(4, { message: "Password must be at least 4 characters" }),
-}).strict();
+export const signInSchema = z
+  .object({
+    email: z.email({ message: "Invalid email format" }),
+    password: z
+      .string()
+      .min(4, { message: "Password must be at least 4 characters" }),
+  })
+  .strict();

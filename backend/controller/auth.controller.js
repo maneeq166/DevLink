@@ -1,6 +1,7 @@
 import { signInSchema, signUpSchema } from "../validation/signup.validation.js";
-import { User } from "../models/userModel.js";
+import { User } from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function signUp(req, res) {
   try {
@@ -67,7 +68,12 @@ export async function signIn(req, res) {
     const comparePass = await bcrypt.compare(password, userExists.password);
 
     if (comparePass) {
-      return res.status(200).json({ message: "Signed In!", success: true });
+      const token = jwt.sign({ id: userExists._id, role: userExists.role },process.env.JWT_SECRET);
+      if (token) {
+        return res
+          .status(200)
+          .json({ message: "Signed In!", success: true, token });
+      }
     } else {
       return res
         .status(404)

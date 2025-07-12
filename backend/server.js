@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import { User } from "./models/userModel.js";
-import { Link } from "./models/linkModel.js";
+import { User } from "./models/user.model.js";
+import { Link } from "./models/link.model.js";
 import dotenv from "dotenv";
 import authMiddleware from "./middleware/authMiddleware.js";
 import authRouter from "./routes/auth.routes.js";
