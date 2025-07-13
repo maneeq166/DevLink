@@ -1,14 +1,12 @@
 import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-import { User } from "./models/user.model.js";
-import { Link } from "./models/link.model.js";
 import dotenv from "dotenv";
-import authMiddleware from "./middleware/authMiddleware.js";
 import authRouter from "./routes/auth.routes.js";
 import morgan from "morgan";
 import helmet from "helmet";
 import { connection } from "./config/db.config.js";
+import linkRouter from "./routes/link.routes.js";
 dotenv.config();
 
 const app = express();
@@ -65,18 +63,13 @@ const deleteLink = async (req, res) => {
 };
 
 app.use("/auth", authRouter);
-app.post("/addlink", authMiddleware, addLink);
-app.get("/links", authMiddleware, getLinks);
-app.delete("/deletelink/:id", authMiddleware, deleteLink);
+app.use("/link",linkRouter);
 
-function started() {
-  console.log(`Example app listening on port ${port}`);
-}
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
 });
 
 app.use((req, res, next) => {
-  return res.status(404).json({ message: "Not found!", success: false });
+  return res.status(404).json({ message: "Not found! (404)", success: false });
 });

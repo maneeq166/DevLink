@@ -1,6 +1,6 @@
-import { Link, Link } from "../models/link.model";
-import { Tag } from "../models/tags.model";
-import { User } from "../models/user.model";
+import Link from "../models/link.model.js";
+import Tag  from "../models/tags.model.js";
+import User  from "../models/user.model.js";
 
 export async function addLink(req, res) {
   try {
