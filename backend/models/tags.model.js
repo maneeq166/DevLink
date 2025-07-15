@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
 
 const tagSchema = new mongoose.Schema({
-    tag:{
-        type:String,
-        required:true,
-        unique:true
-    }
-})
+  tag: {
+    type: String,
+    required: [true, 'Tag is required'],
+    unique: true,
+    trim: true,
+    lowercase: true
+  }
+});
 
 const Tag = mongoose.model("Tag",tagSchema);
 

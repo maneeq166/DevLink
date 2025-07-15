@@ -1,6 +1,6 @@
 import Link from "../models/link.model.js";
-import Tag  from "../models/tags.model.js";
-import User  from "../models/user.model.js";
+import Tag from "../models/tags.model.js";
+import User from "../models/user.model.js";
 
 export async function addLink(req, res) {
   try {
@@ -14,7 +14,7 @@ export async function addLink(req, res) {
         .json({ message: "No user Found!", success: false });
     }
 
-    const { title, url, tags } = req.body;
+    const { title, url, tagsee } = req.body;
 
     const noteAlreadyExists = await Link.findOne({ $or: [{ title }, { url }] });
 
@@ -24,17 +24,54 @@ export async function addLink(req, res) {
         .json({ message: "Url Already Exists!", success: false });
     }
 
-    const tag = await Tag.findOne({ tag: tags });
+//     if (!Array.isArray(tagsee)) {
+//       return res
+//         .status(400)
+//         .json({ message: "Tags needs to be Array", success: false });
+//     }
 
-    if (tag) {
-      return res
-        .status(404)
-        .json({ message: "Tag Already Exists!", success: false });
+//  const tagIds = [];
+
+// for (const rawTag of tagsee) {
+//   if (!rawTag || typeof rawTag !== "string" || rawTag.trim() === "") {
+//     continue;
+//   }
+
+//   const tagName = rawTag.trim().toLowerCase();
+
+//   let tag = await Tag.findOne({ tag: tagName });
+
+//   if (!tag) {
+//     try {
+//       tag = await Tag.create({ tag: tagName });
+//     } catch (err) {
+//       // If a duplicate key error occurred, someone else might have just created it
+//       if (err.code === 11000) {
+//         tag = await Tag.findOne({ tag: tagName });
+//       } else {
+//         console.error(`Failed to create tag '${tagName}':`, err);
+//         continue; // skip this tag and continue with others
+//       }
+//     }
+//   }
+
+//   if (tag && tag._id) {
+//     tagIds.push(tag._id);
+//   }
+// }
+
+
+
+
+    const tag = await Tag.findOne({ tag: tagsee });
+    let tagCreated = null;
+    if (!tag) {
+      tagCreated = await Tag.create({
+        tag: tagsee,
+      });
+    }else{
+      tagCreated=tag;
     }
-
-    const tagCreated = await Tag.create({
-      tags,
-    });
 
     if (!tagCreated) {
       return res
@@ -45,7 +82,7 @@ export async function addLink(req, res) {
         title,
         url,
         user: user._id,
-        tags: tagCreated._id,
+        tags: tagIds,
       });
 
       if (!note) {
@@ -59,8 +96,10 @@ export async function addLink(req, res) {
       }
     }
   } catch (error) {
+    console.log(error);
+
     return res
-      .status(404)
+      .status(500)
       .json({ message: "Internal Server Error", success: false });
   }
 }
@@ -75,7 +114,7 @@ export async function getLinks(req, res) {
         .json({ message: "No user Found!", success: false });
     }
 
-    const Posts = await Link.find({ user: userId }).sort({createdAt:-1});
+    const Posts = await Link.find({ user: userId }).sort({ createdAt: -1 });
 
     if (!Posts) {
       return res
@@ -91,23 +130,27 @@ export async function getLinks(req, res) {
   }
 }
 
-export async function getLink(req,res){
-    try {
-        const shortUrl = req.params.id;
+export async function getLink(req, res) {
+  try {
+    const shortUrl = req.params.id;
 
-    if(!shortUrl){
-        return res.status(404).json({message:"ShortUrl Not founded!",success:false})
+    if (!shortUrl) {
+      return res
+        .status(404)
+        .json({ message: "ShortUrl Not founded!", success: false });
     }
 
-    const Link = await Link.findOne({shortUrl:shortUrl});
+    const Link = await Link.findOne({ shortUrl: shortUrl });
 
-    const {url}=Link;
-    if(!url){
-        return res.status(404).json({message:"Link not found!",success:false})
+    const { url } = Link;
+    if (!url) {
+      return res
+        .status(404)
+        .json({ message: "Link not found!", success: false });
     }
 
-    return res.status(200).redirect(`${url}`)
-    } catch (error) {
-        return res.status(404).json({message:"No user Found!",success:false})
-    }
+    return res.status(200).redirect(`${url}`);
+  } catch (error) {
+    return res.status(404).json({ message: "No user Found!", success: false });
+  }
 }
