@@ -5,8 +5,6 @@ const tagSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Tag is required'],
     unique: true,
-    trim: true,
-    lowercase: true
   }
 });
 
