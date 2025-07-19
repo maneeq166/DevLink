@@ -137,3 +137,24 @@ export async function getLink(req, res) {
       .json({ message: "Internal Server Error", success: false });
   }
 }
+
+export async function deleteLink(req,res){
+  const userId= req.userId;
+
+  const linkId = req.params.id
+
+  if(!userId){
+    return res.status(400).json({message:"Login in First!",success:false})
+  }
+
+  const user = await User.findById(userId);
+
+if(!user){
+    return res.status(400).json({message:"Login in First!",success:false})
+  }else{
+    await Link.deleteOne({_id:linkId})
+  }
+
+
+
+}

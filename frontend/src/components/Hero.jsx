@@ -1,6 +1,7 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const nav = useNavigate();
   return (
     <section className="bg-gray-900 text-white min-h-screen flex items-center justify-center px-6 py-12">
       <div className="max-w-4xl text-center">
@@ -11,11 +12,11 @@ const Hero = () => {
           Store your favorite links in one place, share them with the world, and discover what others are bookmarking.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg">
+          <button onClick={()=>nav("/login")} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg">
             Get Started
           </button>
           <button className="border border-gray-400 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg">
-            Explore Public Links
+            Explore 
           </button>
         </div>
       </div>
