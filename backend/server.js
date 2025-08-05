@@ -8,6 +8,7 @@ import helmet from "helmet";
 import { connection } from "./config/db.config.js";
 import linkRouter from "./routes/link.routes.js";
 import profileRouter from "./routes/profile.route.js";
+import notesRouter from "./routes/notes.route.js";
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/link",linkRouter);
 app.use("/profile",profileRouter);
+app.use("/notes",notesRouter);
 
 const port = process.env.PORT;
 app.listen(port, () => {

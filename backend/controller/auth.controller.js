@@ -1,21 +1,11 @@
-import { signInSchema, signUpSchema } from "../validation/signup.validation.js";
+import { signInSchema, signUpSchema } from "../validator/user.validation.js";
 import User  from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export async function signUp(req, res) {
   try {
-    const signUpBody = signUpSchema.safeParse(req.body);
-
-    if (!signUpBody) {
-      return res.status(400).json({
-        message: "Incorrect Format",
-        error: signUpBody.error.errors,
-        success: false,
-      });
-    }
-
-    const { username, password, email } = signUpBody.data;
+    const { username, password, email } = req.body;
 
     const credExists = await User.findOne({ $or: [{ username }, { email }] });
 
@@ -47,16 +37,8 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
   try {
-    const signIn = signInSchema.safeParse(req.body);
-
-    if (!signIn) {
-      return res.status(400).json({
-        message: "Incorrect Format",
-        error: signUpBody.error.errors,
-        success: false,
-      });
-    }
-    const { email, password } = signIn.data;
+    
+    const { email, password } = req.body;
     const userExists = await User.findOne({ email });
 
     if (!userExists) {

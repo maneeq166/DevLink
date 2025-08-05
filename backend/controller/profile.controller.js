@@ -19,6 +19,37 @@ export async function getProfile(req,res){
     return res.json({user,links,success:true});
 }
 
+export async function updateProfile(req,res){
+    const id = req.userId;
+
+    const user= await User.findById(id).select("username email");
+
+    if(!user){
+        return res.status(400).json({message:"User not found",success:false})
+    }
+
+    const {username,email} = req.body;
+
+    if(username){
+        user.username=username;
+    }
+
+    if(email){
+        user.email=email;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id,{user});
+
+
+    if(updatedUser){
+        return res.status(500).json({message:"Something went wrong",success:false})
+    }
+
+
+    return res.status(201).json({message:"Updated your profile!",success:true});
+
+}
+
 
 export async function getOtherProfile(req,res){
     const userId = req.params.id;
