@@ -158,3 +158,16 @@ if(!user){
 
 
 }
+
+
+export async function updateLink(req,res){
+  const userId = req.userId;
+  const {updatedLink,linkId} = req.body;
+
+  const link = await  Link.findOneAndUpdate({_id:linkId,user:userId},updatedLink,{new:true});
+
+  if(!link){
+    return res.status(404).json({message:"No link found!",success:false})
+  }
+  return res.status(200).json({message:"Link updated!",success:true,link})
+}
