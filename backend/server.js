@@ -2,13 +2,14 @@ import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import authRouter from "./routes/auth.routes.js";
+import authRouter from "./routes/auth.route.js";
 import morgan from "morgan";
 import helmet from "helmet";
 import { connection } from "./config/db.config.js";
-import linkRouter from "./routes/link.routes.js";
+import linkRouter from "./routes/link.route.js";
 import profileRouter from "./routes/profile.route.js";
 import notesRouter from "./routes/notes.route.js";
+import githubRouter from "./routes/github.route.js";
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/auth", authRouter);
 app.use("/link",linkRouter);
 app.use("/profile",profileRouter);
 app.use("/notes",notesRouter);
+app.use("/github",githubRouter);
 
 const port = process.env.PORT;
 app.listen(port, () => {
